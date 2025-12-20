@@ -1,0 +1,13 @@
+using MediatR;
+using Template.Dashboard.Core.Response;
+
+namespace Template.API.Employee.Commands.Auth.Commands.ForgetPassword;
+
+public record ForgetPasswordCommand()
+{
+    public record Request:IRequest<OperationResponse>
+    {
+        public string Email { get; set; }
+    }
+}
+
