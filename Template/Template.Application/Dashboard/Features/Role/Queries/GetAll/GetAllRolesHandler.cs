@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Template.Dashboard.Common;
 using Template.Dashboard.Core.Response;
 
 namespace Template.Dashboard.Role.Queries.GetAll;
@@ -24,7 +25,7 @@ public class GetAllRolesHandler:IRequestHandler<GetAllRolesQuery.Request,Operati
         return new GetAllRolesQuery.Response
         {
             Count = roles.Count,
-            Roles = roles
+            Roles = roles.ApplyPagination(request.PageSize,request.PageIndex)
         };
     }
 }

@@ -1,13 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Identity;
+using Template.Domain.Enums;
 using Template.Domain.Primitives.Entity.Interface;
 
 namespace Template.Domain.Primitives.Entity.Identity;
 
 public class Role : IdentityRole<Guid>, IBaseEntity<Guid>
 {
-    public bool IsActive { get; set; }
+    public RoleStatus Status { get; private set; }
 
     private List<IdentityUserRole<Guid>> _userRoles = new();
     public IReadOnlyCollection<IdentityUserRole<Guid>> UserRoles => _userRoles.AsReadOnly();
@@ -21,10 +22,10 @@ public class Role : IdentityRole<Guid>, IBaseEntity<Guid>
     public DateTimeOffset? DateUpdated { get; set; }
     public Guid? UpdatedBy { get; set; }
 
-    public Role(string name,bool isActive)
+    public Role(string name,RoleStatus status)
     {
         Name = name;
-        IsActive = isActive;
+        Status = status;
     }
 
     public void ClearAllUsers()

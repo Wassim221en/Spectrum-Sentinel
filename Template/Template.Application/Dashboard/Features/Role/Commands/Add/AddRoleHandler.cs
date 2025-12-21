@@ -20,7 +20,7 @@ public class AddRoleHandler:IRequestHandler<AddRoleCommand.Request,OperationResp
 
     public async Task<OperationResponse<GetAllRolesQuery.Response.RoleRes>> Handle(AddRoleCommand.Request request, CancellationToken cancellationToken)
     {
-        var role = new Domain.Primitives.Entity.Identity.Role(request.Name,request.IsActive);
+        var role = new Domain.Primitives.Entity.Identity.Role(request.Name,request.Status);
         var identityResult = await _roleManager.CreateAsync(role);
         if (!identityResult.Succeeded)
             return new HttpMessage("Adding role failed", HttpStatusCode.InternalServerError);
@@ -35,7 +35,7 @@ public class AddRoleHandler:IRequestHandler<AddRoleCommand.Request,OperationResp
         {
             RoleId = role.Id,
             RoleName = role.Name??"",
-            IsActive = role.IsActive,
+            Status = role.Status,
             UserCount = 0,
         };
     }

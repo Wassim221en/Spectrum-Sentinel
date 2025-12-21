@@ -10,7 +10,7 @@ public class GetAllRolesSpecification:Specification<Domain.Primitives.Entity.Ide
         ApplyFilters(r=>
             ((request.Search==null ||request.Search=="")||(r.Name??"").Contains(request.Search))
         &&
-        (!request.IsActive.HasValue||r.IsActive == request.IsActive)
+        (!request.Status.HasValue||r.Status == request.Status)
         );
     }
 }
