@@ -7,12 +7,13 @@ public class GetAllEmployeesSpecification : Specification<Domain.Entities.Securi
     public GetAllEmployeesSpecification(GetAllEmployeesQuery.Request request)
     {
         ApplyFilters(e =>
+            !e.DateDeleted.HasValue&&
             ((request.Search == null || request.Search == "") || 
              (e.FirstName.Contains(request.Search) || 
               e.LastName.Contains(request.Search) || 
               (e.Email ?? "").Contains(request.Search)))
             &&
-            (!request.IsActive.HasValue || (request.IsActive.Value ? !e.DateDeleted.HasValue : e.DateDeleted.HasValue))
+            (!request.Status.HasValue || (request.Status.Value ==e.Status))
         );
     }
 }

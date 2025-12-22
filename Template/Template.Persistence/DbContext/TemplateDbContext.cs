@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Template.Dashboard.DbContext;
 using Template.Domain.Entities;
 using Template.Domain.Entities.Notifications;
@@ -44,5 +45,11 @@ public class TemplateDbContext:IdentityDbContext<User,Role,Guid>, ITemplateDbCon
             .WithOne()
             .HasForeignKey(ur=>ur.RoleId)
             .IsRequired();
+        builder.Entity<Role>()
+            .Property(r => r.Number)
+            .UseIdentityAlwaysColumn()
+            .HasIdentityOptions(startValue: 1, incrementBy: 1)
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);;
+
     }
 }

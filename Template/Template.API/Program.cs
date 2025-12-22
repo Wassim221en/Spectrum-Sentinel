@@ -31,6 +31,7 @@ using Template.Persistence.DbContext;
 using Template.Domain.Primitives.Entity.Identity;
 using Template.Infrastructe;
 using Template.Persistence;
+using Template.Persistence.DataSeed;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +90,13 @@ builder.Services.AddCors(options =>
         });
 });
 var app = builder.Build();
+
+// Seed Data
+using (var scope = app.Services.CreateScope())
+{
+    await DataSeeder.SeedDataAsync(scope.ServiceProvider);
+}
+
 app.UseCors("AllowFrontend");
 // Configure Event Bus Subscriptions
 var eventBus = app.Services.GetRequiredService<IEventBus>();

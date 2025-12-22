@@ -58,23 +58,17 @@ public class AddEmployeeHandler : IRequestHandler<AddEmployeeCommand.Request, Op
             var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
             return new HttpMessage($"Adding employee failed: {errors}", HttpStatusCode.BadRequest);
         }
-        if (request.RoleIds.Any())
-        {
-            var roles = await _repository.Query<Domain.Primitives.Entity.Identity.Role>()
-                .Where(r => request.RoleIds.Contains(r.Id))
-                .ToListAsync(cancellationToken);
 
-            foreach (var role in roles)
-            {
-                identityResult = await _userManager.AddToRoleAsync(employee, role.Name!);
-                if (!identityResult.Succeeded)
-                {
-                    var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
-                    return new HttpMessage($"Adding role failed: {errors}", HttpStatusCode.InternalServerError);
-                }
-            }
+        var role = await _repository.Query<Domain.Primitives.Entity.Identity.Role>()
+            .FirstOrDefaultAsync(r => r.Id == request.RoleId, cancellationToken);
+        if (role is null)
+            return new HttpMessage("Role not found", HttpStatusCode.NotFound);
+        identityResult = await _userManager.AddToRoleAsync(employee, role.Name!);
+        if (!identityResult.Succeeded)
+        {
+            var errors = string.Join(", ", identityResult.Errors.Select(e => e.Description));
+            return new HttpMessage($"Adding role failed: {errors}", HttpStatusCode.InternalServerError);
         }
-        
         var integrationEvent = new EmployeeCreatedIntegrationEvent(
             employee.Id,
             employee.FirstName,
@@ -93,7 +87,6 @@ public class AddEmployeeHandler : IRequestHandler<AddEmployeeCommand.Request, Op
             UserName = employee.UserName,
             Email = employee.Email ?? "",
             PhoneNumber = employee.PhoneNumber ?? "",
-            IsActive = true
         };
     }
 }

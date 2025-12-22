@@ -8,6 +8,7 @@ namespace Template.Domain.Primitives.Entity.Identity;
 
 public class Role : IdentityRole<Guid>, IBaseEntity<Guid>
 {
+    public long Number { get; private set; }
     public RoleStatus Status { get; private set; }
 
     private List<IdentityUserRole<Guid>> _userRoles = new();

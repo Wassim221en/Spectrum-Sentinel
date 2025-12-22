@@ -22,6 +22,7 @@ public class GetAllRolesQuery
         public class RoleRes
         {
             public Guid RoleId { get; set; }
+            public long Number { get; set; }
             public string RoleName { get; set; }
             public int UserCount { get; set; }
             public RoleStatus Status { get; set; }
@@ -29,6 +30,7 @@ public class GetAllRolesQuery
             public static Expression<Func<Domain.Primitives.Entity.Identity.Role, RoleRes>> Selector() => r => new()
             {
                 RoleId=r.Id,
+                Number=r.Number,
                 RoleName=r.Name??"",
                 UserCount = r.UserRoles.Count(),
                 Status = r.Status,

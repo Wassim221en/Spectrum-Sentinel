@@ -2,6 +2,7 @@ using System.Linq.Expressions;
 using MediatR;
 using Template.Dashboard.Core;
 using Template.Dashboard.Core.Response;
+using Template.Domain.Enums;
 
 namespace Template.Dashboard.Employee.Queries.GetAll;
 
@@ -10,7 +11,7 @@ public class GetAllEmployeesQuery
     public class Request:PaginationRequest,IRequest<OperationResponse<Response>>
     {
         public string ?Search { get; set; }
-        public bool? IsActive { get; set; }
+        public EmployeeStatus ?Status { get; set; }
     }
 
     public class Response
@@ -27,7 +28,7 @@ public class GetAllEmployeesQuery
             public string UserName { get; set; }
             public string Email { get; set; }
             public string PhoneNumber { get; set; }
-            public bool IsActive { get; set; }
+            public EmployeeStatus Status { get; set; }
 
             public static Expression<Func<Domain.Entities.Security.Employee, EmployeeRes>> Selector() => e => new()
             {
@@ -37,7 +38,7 @@ public class GetAllEmployeesQuery
                 FullName = e.FullName,
                 Email = e.Email ?? "",
                 PhoneNumber = e.PhoneNumber ?? "",
-                IsActive = !e.DateDeleted.HasValue
+                Status=e.Status,
             };
         }
     }
