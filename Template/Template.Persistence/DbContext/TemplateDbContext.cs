@@ -49,7 +49,12 @@ public class TemplateDbContext:IdentityDbContext<User,Role,Guid>, ITemplateDbCon
             .Property(r => r.Number)
             .UseIdentityAlwaysColumn()
             .HasIdentityOptions(startValue: 1, incrementBy: 1)
-            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);;
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
+        builder.Entity<User>()
+            .Property(r => r.Number)
+            .UseIdentityAlwaysColumn()
+            .HasIdentityOptions(startValue: 1, incrementBy: 1)
+            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
 
     }
 }

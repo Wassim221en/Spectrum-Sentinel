@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Template.API;
 using Template.API.Attributes;
 using Template.Dashboard.Core.Response;
+using Template.Dashboard.Dashboard.Features.Role.Queries.GetAllNames;
 using Template.Dashboard.Dashboard.Features.Role.Queries.GetAllPermissions;
 using Template.Dashboard.Role.Commands.Add;
 using Template.Dashboard.Role.Commands.Delete;
@@ -75,4 +76,12 @@ public class RoleController : ControllerBase
         [FromServices]
         IRequestHandler<GetAllPermissionsQuery.Request, OperationResponse<GetAllPermissionsQuery.Response>> handler)
         => (await handler.Handle(new GetAllPermissionsQuery.Request(), CancellationToken.None)).ToActionResult();
+
+    [HttpGet]
+    [ProducesResponseType(typeof(OperationResponse<List<GetAllRolesNameQuery.Response>>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetAllNames([FromQuery] GetAllRolesNameQuery.Request request,
+        [FromServices]
+        IRequestHandler<GetAllRolesNameQuery.Request, OperationResponse<List<GetAllRolesNameQuery.Response>>> handler)
+        => (await handler.Handle(request, CancellationToken.None)).ToActionResult();
 }

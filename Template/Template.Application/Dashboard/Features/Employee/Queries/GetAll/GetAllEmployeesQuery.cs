@@ -22,6 +22,7 @@ public class GetAllEmployeesQuery
         public class EmployeeRes
         {
             public Guid EmployeeId { get; set; }
+            public long Number { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public string FullName { get; set; }
@@ -33,6 +34,7 @@ public class GetAllEmployeesQuery
             public static Expression<Func<Domain.Entities.Security.Employee, EmployeeRes>> Selector() => e => new()
             {
                 EmployeeId = e.Id,
+                Number = e.Number,
                 FirstName = e.FirstName,
                 LastName = e.LastName,
                 FullName = e.FullName,

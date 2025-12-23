@@ -65,7 +65,6 @@ public class EmployeeController : ControllerBase
 
 
     [HttpGet]
-    [HasPermissions("Users.View", "Users.Edit")]
     [ProducesResponseType(typeof(OperationResponse<GetAllEmployeesQuery.Response>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetAll(
@@ -87,7 +86,7 @@ public class EmployeeController : ControllerBase
     [ProducesResponseType(typeof(OperationResponse<GetAllEmployeesQuery.Response.EmployeeRes>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Add(
-        [FromForm] AddEmployeeCommand.Request request,
+        [FromBody] AddEmployeeCommand.Request request,
         [FromServices]
         IRequestHandler<AddEmployeeCommand.Request, OperationResponse<GetAllEmployeesQuery.Response.EmployeeRes>> handler)
         => (await handler.Handle(request, CancellationToken.None)).ToActionResult();

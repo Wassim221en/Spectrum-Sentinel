@@ -7,6 +7,7 @@ namespace Template.Domain.Primitives.Entity.Identity;
 
 public abstract class User : IdentityUser<Guid>, IBaseEntity<Guid>
 {
+    public long Number { get; set; }
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public string FullName => $"{FirstName} {LastName}";

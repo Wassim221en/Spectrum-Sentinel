@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Template.Dashboard.Core.Response;
 using Template.Dashboard.Employee.Queries.GetById;
+using Template.Domain.Enums;
 
 namespace Template.Dashboard.Employee.Commands.Modify;
 
@@ -14,7 +15,8 @@ public class ModifyEmployeeCommand
         public string LastName { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-        public List<Guid> RoleIds { get; set; } = new();
+        public Guid RoleId { get; set; }
+        public EmployeeStatus Status { get; set; }
     }
 }
 

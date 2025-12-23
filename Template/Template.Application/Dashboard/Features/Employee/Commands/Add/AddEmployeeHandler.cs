@@ -32,10 +32,7 @@ public class AddEmployeeHandler : IRequestHandler<AddEmployeeCommand.Request, Op
 
     public async Task<OperationResponse<GetAllEmployeesQuery.Response.EmployeeRes>> Handle(AddEmployeeCommand.Request request, CancellationToken cancellationToken)
     {
-        var isUserNameExists = await _repository.Query<Domain.Entities.Security.Employee>()
-            .AnyAsync(e => e.UserName == request.UserName, cancellationToken: cancellationToken);
-        if(isUserNameExists)
-            return new HttpMessage("UserName Already Exists", HttpStatusCode.BadRequest);
+      
         if(request.Email is not null && await _repository.Query<Domain.Entities.Security.Employee>()
             .AnyAsync(e => e.Email == request.Email, cancellationToken: cancellationToken))
             return new HttpMessage("Email Already Exists", HttpStatusCode.BadRequest);
@@ -47,10 +44,11 @@ public class AddEmployeeHandler : IRequestHandler<AddEmployeeCommand.Request, Op
             FirstName = request.FirstName,
             LastName = request.LastName,
             Email = request.Email,
-            UserName = request.UserName,
+            
             PhoneNumber = request.PhoneNumber,
             EmailConfirmed = false,
             PhoneNumberConfirmed = false,
+            UserName = request.Email
         };
         var identityResult = await _userManager.CreateAsync(employee, request.Password);
         if (!identityResult.Succeeded)
